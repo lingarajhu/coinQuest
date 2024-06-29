@@ -5,6 +5,7 @@ import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { Link } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
+import toast, { Toaster } from "react-hot-toast";
 
 export function numberWithCommas(val) {
   return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -16,9 +17,10 @@ const Corosal = () => {
   const currencyV2 = currency?.toLowerCase();
 
   const fetchTrendingData = async () => {
-    const data = await fetch(TRENDING_COINS, OPTIONS);
-    const json = await data.json();
-    setTrending(json?.coins);
+    const data = await fetch(TRENDING_COINS, OPTIONS)
+      .then((response) => response.json())
+      .then((res) => setTrending(res?.coins))
+      .catch((err) => toast.error("Please refresh the page"));
   };
 
   useEffect(() => {
@@ -86,6 +88,7 @@ const Corosal = () => {
         responsive={responsive}
         items={items}
       />
+      <Toaster position="top-center" />
     </div>
   );
 };
