@@ -70,7 +70,7 @@ const Header = () => {
               variant="outlined"
               sx={{
                 width: { lg: 100, xs: 80, md: 100, sm: 70 },
-                height: 40,
+                height: 35,
                 marginLeft: { lg: 0, xs: "-10px", md: 0, sm: "-8px" },
                 marginRight: 2,
                 fieldSet: {
