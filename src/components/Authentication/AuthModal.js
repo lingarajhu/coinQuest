@@ -14,7 +14,7 @@ const AuthModal = () => {
         <SideBar onClick={handleModal} />
       ) : (
         <button
-          className="bg-[#FFD700] px-3 py-2 font-bold text-black rounded-md"
+          className="bg-[#FFD700] px-3 py-2 sm:py-0 sm:px-1 xs:py-0 xs:px-1 sm:-ml-4 xs:-ml-3 font-bold text-black rounded-md"
           onClick={() => setOpenModel(true)}
         >
           Login
