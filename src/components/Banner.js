@@ -61,9 +61,9 @@ const Banner = () => {
       <h1
         onMouseEnter={handelMouseEnter}
         onMouseLeave={handelMouseLeave}
-        className="font-bold text-8xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 "
+        className="font-bold lg:text-8xl md:text-8xl text-6xl xs:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 "
       >
-        Coin Quest
+        Crypto Mania
       </h1>
       <p className="text-xl my-4">
         Checkout some trending coins from past week

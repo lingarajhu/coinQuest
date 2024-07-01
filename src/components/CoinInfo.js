@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { HistoricalData, OPTIONS, chartDays } from "../utils/constants";
+import { chartDays } from "../utils/constants";
+import useHistoricalData from "../hooks/useHistoricalData";
 import {
   CircularProgress,
   ThemeProvider,
@@ -18,7 +19,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import SelectedButton from "./SelectedButton";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,22 +32,14 @@ ChartJS.register(
 );
 
 const CoinInfo = ({ coin, currency }) => {
-  const [historical, SetHistorical] = useState([]);
   const [days, setDays] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const fetchHistoricalData = () => {
-    fetch(HistoricalData(coin?.id, days, currency), OPTIONS)
-      .then((respons) => respons.json())
-      .then((res) => SetHistorical(res?.prices))
-      .catch((err) => toast.success("Fetching the data, wait for a moment"));
-  };
+  useHistoricalData(coin, days, currency);
 
-  useEffect(() => {
-    setLoading(true);
-    fetchHistoricalData();
-    setLoading(false);
-  }, [days, currency]);
+  const historical = useSelector((store) => store?.crypto?.historicalData);
+
+  if (!historical) return;
 
   const darkTheme = createTheme({
     palette: {
@@ -100,7 +94,7 @@ const CoinInfo = ({ coin, currency }) => {
                     let time =
                       date.getHours() > 12
                         ? `${date.getHours() - 12}:${date.getMinutes()}PM`
-                        : `${date.getHours()}:${date.getMinutes()}`;
+                        : `${date.getHours()}:${date.getMinutes()}AM`;
 
                     return days === 1 ? time : date.toLocaleDateString();
                   }),

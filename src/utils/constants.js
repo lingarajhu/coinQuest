@@ -2,7 +2,7 @@ export const OPTIONS = {
   method: "GET",
   headers: {
     accept: "application/json",
-    "x-cg-demo-api-key": "CG-qb8Q7pd9U8uyts7V7AUrDJ3L",
+    "x-cg-demo-api-key": process.env.REACT_APP_COINGECO_API_KEY,
   },
 };
 

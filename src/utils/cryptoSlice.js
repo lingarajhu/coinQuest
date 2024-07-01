@@ -5,6 +5,11 @@ const cryptoSlice = createSlice({
   initialState: {
     currency: "INR",
     symbol: "",
+    loading: false,
+    trending: null,
+    coins: null,
+    singleCoin: [],
+    historicalData: [],
   },
   reducers: {
     updateCurrency: (state, action) => {
@@ -13,8 +18,31 @@ const cryptoSlice = createSlice({
     updateSymbol: (state, action) => {
       state.symbol = action.payload;
     },
+    setTrending: (state, action) => {
+      state.trending = action.payload;
+    },
+    setCoins: (state, action) => {
+      state.coins = action.payload;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+    setSingleCoin: (state, action) => {
+      state.singleCoin = action.payload;
+    },
+    setHistoricalData: (state, action) => {
+      state.historicalData = action.payload;
+    },
   },
 });
 
-export const { updateCurrency, updateSymbol } = cryptoSlice.actions;
+export const {
+  updateCurrency,
+  updateSymbol,
+  setTrending,
+  setCoins,
+  setLoading,
+  setSingleCoin,
+  setHistoricalData,
+} = cryptoSlice.actions;
 export default cryptoSlice.reducer;

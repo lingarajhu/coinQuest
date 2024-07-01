@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { CoinList, OPTIONS } from "../utils/constants";
 import { useSelector } from "react-redux";
 import { numberWithCommas } from "./Corosal";
 import Pagination from "@mui/material/Pagination";
@@ -25,37 +24,25 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import { useNavigate } from "react-router-dom";
 import TabPanel from "@mui/lab/TabPanel";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import useCoinList from "../hooks/useCoinList";
 
 const CoinsTable = () => {
-  const [coins, setCoins] = useState([]);
-  const [loading, setLoading] = useState(false);
+  useCoinList();
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [value, setValue] = useState("1");
-
   const navigate = useNavigate();
 
   const currency = useSelector((store) => store.crypto.currency);
-  const currencyV2 = currency.toLowerCase();
-
-  const fetchCoinTabel = () => {
-    setLoading(true);
-    fetch(CoinList(currencyV2), OPTIONS)
-      .then((respons) => respons.json())
-      .then((res) => setCoins(res))
-      .catch((error) => toast.loading("Wait for a moment"));
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchCoinTabel();
-  }, [currencyV2]);
+  const coins = useSelector((store) => store.crypto.coins);
+  const loading = useSelector((store) => store.crypto.loading);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  if (!coins) return <LinearProgress style={{ color: "#ffd600" }} />;
 
   const darkTheam = createTheme({
     palette: {
@@ -93,11 +80,16 @@ const CoinsTable = () => {
     },
     [theme.breakpoints.down("md")]: {
       width: "270px",
-      height: "300px",
+      height: "290px",
     },
     [theme.breakpoints.down("sm")]: {
-      width: "230px",
+      width: "250px",
       height: "260px",
+      marginLeft: "-13px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      width: "190px",
+      height: "180px",
     },
   }));
 
@@ -283,7 +275,8 @@ const CoinsTable = () => {
                     sx={{
                       display: "grid",
                       gridTemplateColumns: {
-                        sm: "1fr",
+                        xs: "1fr",
+                        sm: "1fr 1fr",
                         md: "1fr 1fr",
                         lg: "1fr 1fr 1fr",
                       },
@@ -298,7 +291,7 @@ const CoinsTable = () => {
                         return (
                           <CardDiv>
                             <img
-                              className="lg:w-36 lg:h-36 md:w-32 md:h-32 sm:w-24 sm:h-24"
+                              className="lg:w-36 lg:h-36 md:w-32 md:h-32 sm:w-24 sm:h-24 w-24 h-24"
                               src={coin?.image}
                               alt={coin?.name}
                             />
@@ -307,7 +300,8 @@ const CoinsTable = () => {
                                 fontSize: {
                                   lg: "30px",
                                   md: "20px",
-                                  sm: "10px",
+                                  sm: "20px",
+                                  xs: "20px",
                                 },
                                 fontWeight: 600,
                                 color: "gold",
@@ -323,12 +317,12 @@ const CoinsTable = () => {
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "start",
-                                paddingLeft: { lg: 10, md: 15, sm: 6 },
+                                paddingLeft: { lg: 10, md: 15, sm: 6, xs: 4 },
                                 position: "relative",
                               }}
                             >
                               <Typography sx={{ marginTop: 1 }}>
-                                <span className="lg:font-bold lg:text-xl md:font-bold md:text-lg sm:font-bold sm:text-base">
+                                <span className="lg:font-bold lg:text-xl md:font-bold md:text-lg sm:font-bold sm:text-base font-bold text-base">
                                   Current Price:{" "}
                                 </span>
                                 {currency === "INR" ? "₹" : "$"}{" "}
@@ -342,14 +336,14 @@ const CoinsTable = () => {
                                   color: profit ? "rgb(14, 203, 129)" : "red",
                                 }}
                               >
-                                <span className="text-white lg:font-bold lg:text-xl md:font-bold md:text-lg sm:font-bold sm:text-base">
+                                <span className="text-white lg:font-bold lg:text-xl md:font-bold md:text-lg sm:font-bold sm:text-base font-bold text-base">
                                   24Change:{" "}
                                 </span>
                                 {profit ? "+" : ""}
                                 {coin?.price_change_percentage_24h.toFixed(2)}%
                               </Typography>
                               <Typography sx={{ marginTop: 1 }}>
-                                <span className="lg:font-bold lg:text-xl md:font-bold md:text-lg sm:font-bold sm:text-base">
+                                <span className="lg:font-bold lg:text-xl md:font-bold md:text-lg sm:font-bold sm:text-base font-bold text-base">
                                   Market Cap:{" "}
                                 </span>
                                 {currency === "INR" ? "₹" : "$"}{" "}
@@ -362,7 +356,7 @@ const CoinsTable = () => {
                                 onClick={() =>
                                   navigate(`/coinpage/${coin?.id}`)
                                 }
-                                className="absolute right-2 bottom-6 w-12 h-12 bg-[#FFD700] rounded-full"
+                                className="absolute right-2 bottom-6  xs:right-3 xs:bottom-5 lg:w-12 lg:h-12 md:w-11 md:h-11 sm:w-11 sm:h-11 w-9 h-9 bg-[#FFD700] rounded-full"
                               >
                                 <CallMadeOutlinedIcon />
                               </button>

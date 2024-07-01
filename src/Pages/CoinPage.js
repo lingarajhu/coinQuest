@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
-import { OPTIONS, SingleCoin } from "../utils/constants";
 import CoinInfo from "../components/CoinInfo";
 import { styled } from "@mui/material/styles";
 import { Box, LinearProgress, Typography } from "@mui/material";
@@ -9,22 +8,28 @@ import { parseOptions } from "../utils/constants";
 import { useSelector } from "react-redux";
 import { numberWithCommas } from "../components/Corosal";
 import toast, { Toaster } from "react-hot-toast";
+import useSingleCoinInfo from "../hooks/useSingleCoinInfo";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import CryptoContext from "../context/CryptoContext";
 
 const CoinPage = () => {
   const { id } = useParams();
-  const [singleCoin, setSingleCoin] = useState();
+  useSingleCoinInfo(id);
+
+  const { watchList } = useContext(CryptoContext);
   const currency = useSelector((store) => store?.crypto?.currency);
+  const singleCoin = useSelector((store) => store?.crypto?.singleCoin);
+  const user = useSelector((store) => store?.userInfo?.user);
 
-  const fetchSingleCoinData = () => {
-    fetch(SingleCoin(id), OPTIONS)
-      .then((response) => response.json())
-      .then((res) => setSingleCoin(res))
-      .catch((err) => toast.error("Please Check your internet connection"));
-  };
+  if (!singleCoin) return;
 
-  useEffect(() => {
-    fetchSingleCoinData();
-  }, []);
+  if (singleCoin?.id !== id)
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress style={{ backgroundColor: "gold" }} />
+      </Box>
+    );
 
   const description = () => {
     if (singleCoin) {
@@ -35,12 +40,58 @@ const CoinPage = () => {
     return "";
   };
 
+  const inWatchList = watchList.includes(singleCoin?.id);
+
+  const addToWatchList = async () => {
+    const coinDb = doc(db, "watchlist", user?.uid);
+
+    try {
+      await setDoc(coinDb, {
+        coin: watchList ? [...watchList, singleCoin?.id] : [singleCoin?.id],
+      });
+      toast.success(`${singleCoin?.name} Added to Watchlist !`);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const removeFromWatchList = async () => {
+    const coinRef = doc(db, "watchList", user?.uid);
+
+    try {
+      await setDoc(
+        coinRef,
+        {
+          coin: watchList.filter((watch) => watch !== singleCoin?.id),
+        },
+        { merge: true }
+      );
+
+      toast.success(`${singleCoin?.id} removed from watchlist`);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const handleClick = () => {
+    toast.error("Please Login before adding coin to watchlist");
+  };
+
   const Root = styled("div")(({ theme }) => ({
     display: "flex",
     [theme.breakpoints.down("md")]: {
       flexDirection: "column",
       alignItems: "center",
     },
+  }));
+
+  const WatchList = styled("button")(({ theme }) => ({
+    width: "100%",
+    marginTop: "10px",
+    height: 50,
+    borderRadius: "5px",
+    backgroundColor: inWatchList ? "#f44336" : "#ffc107",
+    color: "black",
   }));
 
   const SideBar = styled("div")(({ theme }) => ({
@@ -66,25 +117,19 @@ const CoinPage = () => {
     alignSelf: "start",
     padding: 20,
     width: "100%",
-    [theme.breakpoints.down("md")]: {
-      display: "flex",
-      justifyContent: "space-around",
-    },
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
-      // alignItems: "center",
+      alignItems: "center",
+    },
+    [theme.breakpoints.down("md")]: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
     },
     [theme.breakpoints.down("xs")]: {
       alignItems: "start",
     },
   }));
-
-  if (!singleCoin)
-    return (
-      <Box sx={{ width: "100%" }}>
-        <LinearProgress style={{ backgroundColor: "gold" }} />
-      </Box>
-    );
 
   return (
     <Root>
@@ -155,6 +200,15 @@ const CoinPage = () => {
               M
             </Typography>
           </span>
+          {!user ? (
+            <WatchList onClick={handleClick}>Add to WatchList</WatchList>
+          ) : (
+            <WatchList
+              onClick={inWatchList ? removeFromWatchList : addToWatchList}
+            >
+              {inWatchList ? "Remove from Watchlist" : "Add to WatchList"}
+            </WatchList>
+          )}
         </MarketData>
       </SideBar>
       <CoinChart>
