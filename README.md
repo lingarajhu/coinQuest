@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+# CryptoMania
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+CryptoMania is a responsive real time crypto data collecting app, gathering all the crypto currencies information at one place.
 
-## Available Scripts
+This project is built with Create-react-app and Material UI for the frontend and for authentication it includes firebase. It is currently deployed on vercel.
 
-In the project directory, you can run:
+### Home Page
 
-### `npm start`
+![Interface](https://github.com/lingarajhu/Netflix-GPT/assets/159787794/37b2136e-9023-4116-80ac-b4706e155379)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Coin List in Tables
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Interface](https://github.com/lingarajhu/Netflix-GPT/assets/159787794/973c36e4-7c25-404d-9fcd-43f999ee5be0)
+![Interface](https://github.com/lingarajhu/Netflix-GPT/assets/159787794/1b6e6fc2-0e97-4575-bfb6-261b298d57c6)
 
-### `npm test`
+### Coin List in Cards
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Interface](https://github.com/lingarajhu/Netflix-GPT/assets/159787794/de0a361e-1149-4546-9812-eec81415930d)
+![Interface](https://github.com/lingarajhu/Netflix-GPT/assets/159787794/042f8b1d-8d00-4b46-807d-dbd41dfd6e83)
 
-### `npm run build`
+When you click on any of these coins it will take you to that particular coin information.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Single Coin information
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Interface](https://github.com/lingarajhu/Netflix-GPT/assets/159787794/741ca18a-c25b-4ad7-b413-421cc0dec8dc)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**By using chartjs library I debeloped the visual represintation of the coin prices over the period upon clicking on at perticular timestamp button it will show the data.**
 
-### `npm run eject`
+### SignIn and signup with google
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![Interface](https://github.com/lingarajhu/Netflix-GPT/assets/159787794/965457e0-19a1-4cb1-a2d1-f2569de45045)
+![Interface](https://github.com/lingarajhu/Netflix-GPT/assets/159787794/beae5bf9-1097-48c7-9b57-6934fcfc8070)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**When you signup with google it will update the profile picture that you have in google.**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Features
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Real-time crypto coin data
+- Trending crypto coins
+- SignIn with google
+- Visual representaion over the period
 
-## Learn More
+## Live Demo
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+You can check out the live demo of the application here: [Deployed link](https://crypto-mania-2024.vercel.app/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Getting Started
 
-### Code Splitting
+To get a local copy up and running, follow these steps:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Clone the repository:
 
-### Analyzing the Bundle Size
+```bash
+git clone https://github.com/lingarajhu/crypto-mania.git
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+2. Install the dependencies
 
-### Making a Progressive Web App
+```bash
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+3. Start the development server
 
-### Advanced Configuration
+```bash
+npm run start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
